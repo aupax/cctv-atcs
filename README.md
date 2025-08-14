@@ -1,6 +1,6 @@
 # CCTV ATCS using FLV Streaming Based
-Simply Tower Block Game using Javascript Languange
+Monitoring real-time CCTV ATCS berbasis FLV Streaming untuk wilayah Kota Kediri
 
-Demo [Click Here](https://aupax.github.io/cctv-atcs)
+Deployed Site [Click Here](https://aupax.github.io/cctv-atcs)
 
 #### ©AUPAX 2025

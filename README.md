@@ -3,7 +3,7 @@
 A **real-time CCTV monitoring** application for **Kediri City’s ATCS** (Area Traffic Control System), supporting both **FLV** and **HLS (m3u8)** streaming formats.  
 Features automatic format detection and optimized playback for low-latency performance.
 
-🔗 **Live Demo:** [https://aupax.github.io/cctv-atcs](https://aupax.github.io/cctv-atcs)
+🔗 **Live Demo:** [Click Here](https://aupax.github.io/cctv-atcs)
 
 ---
 

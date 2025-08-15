@@ -6,7 +6,7 @@
     <title>CCTV ATCS Kediri</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -30,8 +30,12 @@
 
 <!-- Content -->
 <div class="container mt-5 pt-4">
-    <p class="lead">Sistem CCTV ini terintegrasi dengan Area Traffic Control System untuk pemantauan lalu lintas secara real-time.   
-        Video dikirim melalui protokol streaming berbasis FLV (Flash Video) yang dioptimalkan untuk latensi rendah dan performa tinggi.  </p>
+    <p class="lead">
+    Sistem CCTV ini terintegrasi dengan <strong>Area Traffic Control System (ATCS)</strong> untuk pemantauan lalu lintas secara real-time. 
+    Video dikirim melalui protokol streaming berbasis <strong>FLV (Flash Video)</strong> dan <strong>HLS (HTTP Live Streaming – m3u8)</strong>, 
+    yang dioptimalkan untuk latensi rendah, kualitas stabil, serta kompatibilitas tinggi di berbagai perangkat. 
+    Kedua format ini mendukung <em>web-based streaming</em> sehingga pengguna dapat memantau feed CCTV beberapa titik lalu lintas di area <strong>Kota Kediri</strong> langsung melalui browser tanpa memerlukan instalasi tambahan.
+</p>
         
     <p class="btn total-cctv btn-sm mt-2">Total CCTV:  <span id="totalCCTV">0</span></p>
 
@@ -45,7 +49,7 @@
     <!-- About Me -->
     <div id="aboutMe" class="about-me mt-4 p-3 bg-white rounded shadow-sm">
         <h5><i class="fas fa-user-circle me-2"></i>About</h5>
-        <p>Monitoring real-time CCTV ATCS berbasis FLV Streaming untuk wilayah Kota Kediri.</p>
+        <p>Monitoring real-time CCTV ATCS berbasis FLV & HLS Streaming untuk wilayah Kota Kediri.</p>
         <p class="developed">Developed By Aupa</p>
         <p>
             <a href="https://github.com/aupax" target="_blank" oncontextmenu="return false" class="me-3">
@@ -82,7 +86,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flv.js@latest/dist/flv.min.js"></script>
-<script src="js/cctvData.js"></script>
-<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="cctvData.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

@@ -30,11 +30,15 @@ Features automatic format detection and optimized playback for low-latency perfo
 
 ---
 
-## ⚙️ Technologies Used
-- **HTML, CSS, JavaScript**
-- **Leaflet.js** for interactive mapping
-- **flv.js** & **hls.js** for video playback
-- **Bootstrap** for responsive UI styling
+## 🛠️ Tech Stack
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![Leaflet.js](https://img.shields.io/badge/Leaflet-199900?logo=leaflet&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white)
+![FLV.js](https://img.shields.io/badge/FLV.js-FF6600?logo=video&logoColor=white)
+![HLS.js](https://img.shields.io/badge/HLS.js-0066CC?logo=video&logoColor=white)
 
 ---
 
@@ -47,4 +51,4 @@ Features automatic format detection and optimized playback for low-latency perfo
 ---
 
 ## 📄 License
-This project is licensed under the [GPL-3.0 license](LICENSE).
+This project is licensed under the [MIT License](LICENSE).

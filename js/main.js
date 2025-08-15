@@ -12,22 +12,35 @@ document.getElementById('totalCCTV').textContent = cctvData.length;
 const map = L.map('map').setView([-7.816, 112.018], 14);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-// Tambahkan marker dari cctvData
+const markers = {};
+
 cctvData.forEach(cctv => {
     const marker = L.marker(cctv.coords).addTo(map);
     marker.bindPopup(`
         <b>${cctv.name}</b><br>
-        <button class="btn btn-sm btn-primary mt-2" style="font-family: Poppins, sans-serif; font-weight: 400;" onclick="openStream('${cctv.url}', '${cctv.name}')">Lihat Streaming</button>
+        <button class="btn btn-sm btn-primary mt-2 btn-lihatstream" onclick="openStream('${cctv.url}', '${cctv.name}')">Lihat Streaming</button>
     `);
+    markers[cctv.name] = marker;
 });
 
-// Generate list CCTV dengan icon kamera
+function focusMarker(cctv) {
+    setTimeout(() => {
+        map.invalidateSize();
+        map.flyTo(cctv.coords, 17, { animate: true, duration: 0.8 });
+        markers[cctv.name].openPopup();
+    }, 100);
+}
+
 const listContainer = document.getElementById('cctvList');
 cctvData.forEach(cctv => {
     const item = document.createElement('div');
-    item.className = 'cctv-item list-group-item list-group-item-action';
+    item.className = 'cctv-item';
     item.innerHTML = `<i class="fas fa-video cctv-icon"></i><div class="cctv-name">${cctv.name}</div>`;
-    item.onclick = () => openStream(cctv.url, cctv.name);
+    item.onclick = (e) => {
+        e.preventDefault();
+        document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "center" });
+        focusMarker(cctv);
+    };
     listContainer.appendChild(item);
 });
 
@@ -48,31 +61,61 @@ function logMessage(message, isError = false) {
 }
 
 function openStream(url, name) {
-    document.getElementById('log').innerHTML = `[FLV] Opening stream for ${name}...`;
+    document.getElementById('log').innerHTML = `[Player] Opening stream for ${name}...`;
+    const videoElement = document.getElementById('videoElement');
 
-    if (flvjs.isSupported()) {
-        const videoElement = document.getElementById('videoElement');
+    // Hentikan player lama
+    if (flvPlayer) {
+        flvPlayer.destroy();
+        flvPlayer = null;
+    }
+    if (videoElement) {
+        videoElement.pause();
+        videoElement.src = "";
+    }
 
-        if (flvPlayer) {
-            flvPlayer.destroy();
+    // Deteksi format
+    if (url.endsWith(".flv")) {
+        if (flvjs.isSupported()) {
+            flvPlayer = flvjs.createPlayer({ type: 'flv', url });
+            flvPlayer.attachMediaElement(videoElement);
+            flvPlayer.load();
+            flvPlayer.play()
+                .then(() => logMessage("FLV streaming started successfully."))
+                .catch(err => logMessage("Error starting FLV stream: " + err, true));
+
+            flvPlayer.on(flvjs.Events.ERROR, (errType, errDetail) => {
+                logMessage(`FLV.js error: ${errType} - ${errDetail}`, true);
+            });
+        } else {
+            logMessage("FLV.js not supported in this browser.", true);
         }
-
-        flvPlayer = flvjs.createPlayer({ type: 'flv', url });
-        flvPlayer.attachMediaElement(videoElement);
-        flvPlayer.load();
-        flvPlayer.play()
-            .then(() => logMessage("Streaming started successfully."))
-            .catch(err => logMessage("Error starting stream: " + err, true));
-
-        flvPlayer.on(flvjs.Events.ERROR, (errType, errDetail) => {
-            logMessage(`FLV.js error: ${errType} - ${errDetail}`, true);
-        });
-
-        flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
-            logMessage("Stream loading complete.");
-        });
-    } else {
-        logMessage("FLV.js not supported in this browser.", true);
+    } 
+    else if (url.endsWith(".m3u8")) {
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(videoElement);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                videoElement.play()
+                    .then(() => logMessage("HLS streaming started successfully."))
+                    .catch(err => logMessage("Error starting HLS stream: " + err, true));
+            });
+        } 
+        // Browser dengan native HLS (Safari, iOS)
+        else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+            videoElement.src = url;
+            videoElement.addEventListener('loadedmetadata', () => {
+                videoElement.play()
+                    .then(() => logMessage("Native HLS streaming started successfully."))
+                    .catch(err => logMessage("Error starting native HLS stream: " + err, true));
+            });
+        } else {
+            logMessage("HLS not supported in this browser.", true);
+        }
+    } 
+    else {
+        logMessage("Unsupported video format.", true);
     }
 
     bootstrapModal.show();
